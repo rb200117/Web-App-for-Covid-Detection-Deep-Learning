@@ -11,6 +11,12 @@ import tensorflow as tf
 from keras.preprocessing import image
 import numpy as np
 from PIL import Image, ImageOps
+from newspaper import Article
+
+try:
+    from googlesearch import search
+except ImportError:
+    print("No module named 'google' found")
 
 st.set_page_config(page_title="CovApp", page_icon="/Users/rakshitbatra/Desktop/Covid-19_Detection/corona_favicon.png")
 st.set_option('deprecation.showfileUploaderEncoding', False)
@@ -90,8 +96,24 @@ else:
     else:
         st.success(string)
         
-        
+query = st.text_input("Enter your Query here")
+      
+url_link = ""
+ 
+for j in search(query, tld="co.in", num=10, stop=1, pause=2):
+    url_link += j
+article = Article(url_link)
+
+article.download()
+
     
+article.parse()
+print(article.text[:300],"...")
+print("for more follow this link: ", url_link)
+st.write(article.text[:300],"...")
+st.write("for more follow this link: ", url_link) 
+
+  
     
     
     
